@@ -29,10 +29,6 @@
 #include <string.h>
 #include <errno.h>
 
-#ifdef WIN32
-#include <windows.h>
-#endif
-
 #include <usbmuxd.h>
 #ifdef HAVE_OPENSSL
 #include <openssl/err.h>
