@@ -3,7 +3,7 @@ variables:
   libplistPipeline: 2
   libusbmuxdBuild: 303
   libusbmuxdPipeline: 3
-  VCPKG_ROOT: $(Pipeline.Workspace)/vcpkg
+  VCPKG_ROOT: $(Pipeline.Workspace)\vcpkg
 jobs:
 - job: windows
   strategy:
@@ -49,16 +49,16 @@ jobs:
   - script: |
       mkdir --verbose %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
       mkdir --verbose %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\
-      xcopy /F %PLATFORM%\Release\imobiledevice.dll %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
-      xcopy /F %PLATFORM%\Release\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
-      xcopy /F %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\bin\*.dll %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
-      xcopy /F %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\getopt-win32\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\getopt.copyright
-      xcopy /F %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\openssl-windows\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\openssl.copyright
-      xcopy /F %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\libplist\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\libplist.copyright
-      xcopy /F %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\libusbmuxd\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\libusbmuxd.copyright
-      xcopy /F %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\zlib\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\zlib.copyright
-      xcopy /F %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libplist\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
-      xcopy /F %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libusbmuxd\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
+      xcopy /F /Y %PLATFORM%\Release\imobiledevice.dll %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
+      xcopy /F /Y %PLATFORM%\Release\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\bin\*.dll %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\getopt-win32\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\getopt.copyright
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\openssl-windows\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\openssl.copyright
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\libplist\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\libplist.copyright
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\libusbmuxd\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\libusbmuxd.copyright
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\zlib\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\zlib.copyright
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libplist\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libusbmuxd\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
     displayName: 'Install'
   - task: PublishBuildArtifacts@1
     inputs:
