@@ -3,6 +3,7 @@ variables:
   libplistPipeline: 2
   libusbmuxdBuild: 303
   libusbmuxdPipeline: 3
+  VCPKG_ROOT: $(Pipeline.Workspace)/vcpkg
 jobs:
 - job: windows
   strategy:
@@ -11,13 +12,13 @@ jobs:
       x64:
         BUILD_ARCH: x64
         PLATFORM: x64
-        RID: win7-x64
+        RID: win10-x64
       x86:
         BUILD_ARCH: x86
         PLATFORM: Win32
-        RID: win7-x86
+        RID: win10-x86
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: 'windows-latest'
   steps:
   - script: |
       git clone https://github.com/Microsoft/vcpkg.git
