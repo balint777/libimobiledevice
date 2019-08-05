@@ -44,9 +44,9 @@
     <ProjectGuid>{B9BD4E17-CE9F-40B8-8B91-2A873287268E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ideviceimagemounter</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
