@@ -139,67 +139,67 @@ jobs:
 #    displayName: Publish
 
 #- job: linux
-  variables:
-    TARGET: x86_64-unknown-linux-gnu
-    RID: ubuntu.16.04-x64
-    CFLAGS: -fPIC
-  pool:
-    vmImage: 'ubuntu-16.04'
-  steps:
-  - script: |
-      lsb_release -a
-      sudo apt-get remove -y libssl1.1 ant
-      sudo apt-get install -y software-properties-common
-      sudo add-apt-repository --remove -y ppa:ondrej/php
-      sudo apt-get update
-    displayName: Check Ubuntu version, remove non-standard libssl1.1
-  - task: DownloadBuildArtifacts@0
-    inputs:
-      buildType: 'specific'
-      project: 'imobiledevice-net'
-      pipeline: $(libusbmuxdPipeline)
-      buildVersionToDownload: 'specific'
-      buildId: $(libusbmuxdBuild)
-      downloadType: 'single'
-      artifactName: 'libusbmuxd'
-      downloadPath: '$(System.ArtifactsDirectory)'
-    displayName: 'Download libusbmuxd artifacts'
-  - task: DownloadBuildArtifacts@0
-    inputs:
-      buildType: 'specific'
-      project: 'imobiledevice-net'
-      pipeline: $(libplistPipeline)
-      buildVersionToDownload: 'specific'
-      buildId: $(libplistBuild)
-      downloadType: 'single'
-      artifactName: 'libplist'
-      downloadPath: '$(System.ArtifactsDirectory)'
-    displayName: 'Download libplist artifacts'
-  - script: |
-      sudo apt-get install -y libssl-dev
-    displayName: Install autotools, openSSL
-  - script: |
-      export PKG_CONFIG_PATH="$SYSTEM_ARTIFACTSDIRECTORY/libplist/$RID/lib/pkgconfig:$PKG_CONFIG_PATH"
-      export PKG_CONFIG_PATH="$SYSTEM_ARTIFACTSDIRECTORY/libusbmuxd/$RID/lib/pkgconfig:$PKG_CONFIG_PATH"
-
-      ./autogen.sh --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY/libimobiledevice/$RID --host=$TARGET --without-cython --enable-static=no --enable-shared=yes --enable-openssl
-      make
-    displayName: Build
-  - script: |
-      make install
-      export INSTALLDIR=$SYSTEM_ARTIFACTSDIRECTORY/libimobiledevice/$RID
-      ./build/install-patchelf.sh
-      ./build/run-patchelf.sh
-
-      echo $BUILD_REPOSITORY_URI\n >> $BUILD_ARTIFACTSTAGINGDIRECTORY/libimobiledevice/$RID/gitinfo
-      echo $BUILD_SOURCEVERSION >> $BUILD_ARTIFACTSTAGINGDIRECTORY/libimobiledevice/$RID/gitinfo
-    displayName: Install
-  - script: |
-      git archive --format tar.gz -o $BUILD_ARTIFACTSTAGINGDIRECTORY/libimobiledevice/libimobiledevice.orig.tar.gz $BUILD_SOURCEVERSION
-    displayName: Build source tarball
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)/libimobiledevice'
-      artifactName: 'libimobiledevice' 
-      publishLocation: 'Container'
-    displayName: Publish
+#  variables:
+#    TARGET: x86_64-unknown-linux-gnu
+#    RID: ubuntu.16.04-x64
+#    CFLAGS: -fPIC
+#  pool:
+#    vmImage: 'ubuntu-16.04'
+#  steps:
+#  - script: |
+#      lsb_release -a
+#      sudo apt-get remove -y libssl1.1 ant
+#      sudo apt-get install -y software-properties-common
+#      sudo add-apt-repository --remove -y ppa:ondrej/php
+#      sudo apt-get update
+#    displayName: Check Ubuntu version, remove non-standard libssl1.1
+#  - task: DownloadBuildArtifacts@0
+#    inputs:
+#      buildType: 'specific'
+#      project: 'imobiledevice-net'
+#      pipeline: $(libusbmuxdPipeline)
+#      buildVersionToDownload: 'specific'
+#      buildId: $(libusbmuxdBuild)
+#      downloadType: 'single'
+#      artifactName: 'libusbmuxd'
+#      downloadPath: '$(System.ArtifactsDirectory)'
+#    displayName: 'Download libusbmuxd artifacts'
+#  - task: DownloadBuildArtifacts@0
+#    inputs:
+#      buildType: 'specific'
+#      project: 'imobiledevice-net'
+#      pipeline: $(libplistPipeline)
+#      buildVersionToDownload: 'specific'
+#      buildId: $(libplistBuild)
+#      downloadType: 'single'
+#      artifactName: 'libplist'
+#      downloadPath: '$(System.ArtifactsDirectory)'
+#    displayName: 'Download libplist artifacts'
+#  - script: |
+#      sudo apt-get install -y libssl-dev
+#    displayName: Install autotools, openSSL
+#  - script: |
+#      export PKG_CONFIG_PATH="$SYSTEM_ARTIFACTSDIRECTORY/libplist/$RID/lib/pkgconfig:$PKG_CONFIG_PATH"
+#      export PKG_CONFIG_PATH="$SYSTEM_ARTIFACTSDIRECTORY/libusbmuxd/$RID/lib/pkgconfig:$PKG_CONFIG_PATH"
+#
+#      ./autogen.sh --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY/libimobiledevice/$RID --host=$TARGET --without-cython --enable-static=no --enable-shared=yes --enable-openssl
+#      make
+#    displayName: Build
+#  - script: |
+#      make install
+#      export INSTALLDIR=$SYSTEM_ARTIFACTSDIRECTORY/libimobiledevice/$RID
+#      ./build/install-patchelf.sh
+#      ./build/run-patchelf.sh
+#
+#      echo $BUILD_REPOSITORY_URI\n >> $BUILD_ARTIFACTSTAGINGDIRECTORY/libimobiledevice/$RID/gitinfo
+#      echo $BUILD_SOURCEVERSION >> $BUILD_ARTIFACTSTAGINGDIRECTORY/libimobiledevice/$RID/gitinfo
+#    displayName: Install
+#  - script: |
+#      git archive --format tar.gz -o $BUILD_ARTIFACTSTAGINGDIRECTORY/libimobiledevice/libimobiledevice.orig.tar.gz $BUILD_SOURCEVERSION
+#    displayName: Build source tarball
+#  - task: PublishBuildArtifacts@1
+#    inputs:
+#      pathtoPublish: '$(Build.ArtifactStagingDirectory)/libimobiledevice'
+#      artifactName: 'libimobiledevice' 
+#      publishLocation: 'Container'
+#    displayName: Publish
