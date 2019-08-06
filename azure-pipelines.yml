@@ -71,8 +71,8 @@ jobs:
       xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\libplist\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\libplist.copyright
       xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\libusbmuxd\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\libusbmuxd.copyright
       xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\share\zlib\copyright %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\licenses\zlib.copyright
-      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libplist\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
-      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libusbmuxd\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libplist\* %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
+      xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libusbmuxd\* %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
     displayName: 'Install'
   - task: ArchiveFiles@2
     inputs:
