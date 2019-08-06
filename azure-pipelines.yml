@@ -29,9 +29,7 @@ jobs:
   steps:
   - task: CacheBeta@0
     inputs:
-      key: |
-        vcpkg
-        $(Agent.OS)
+      key: vcpkg $(Agent.OS) $(PLATFORM)
       path: $(VCPKG_ROOT)
     displayName: Cache VCPKG_ROOT
   - script: |
