@@ -1,3 +1,10 @@
+trigger:
+  tags:
+    include:
+    - v*
+  branches:
+    include:
+    - msvc-master
 variables:
   libplistBuild: 281
   libplistPipeline: 2
@@ -68,30 +75,32 @@ jobs:
       xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libplist\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
       xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libusbmuxd\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
     displayName: 'Install'
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathtoPublish: '$(Build.ArtifactStagingDirectory)/libimobiledevice/' 
-      artifactName: 'libimobiledevice' 
-      publishLocation: 'Container'
-    displayName: Publish
-  
+	
   # Archive files
   # Compress files into .7z, .tar.gz, or .zip
   - task: ArchiveFiles@2
     inputs:
-      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/libimobiledevice/' 
+      rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\libimobiledevice' 
       includeRootFolder: false 
       archiveType: 'zip'
-      archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip' 
+      archiveFile: '$(Build.ArtifactStagingDirectory)\${Build.SourceBranch}.zip' 
       replaceExistingArchive: true 
       verbose: true
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)\libimobiledevice'
+      artifactName: 'libimobiledevice' 
+      publishLocation: 'Container'
+    displayName: Publish
+
   # GitHub Release
   # Create, edit, or delete a GitHub release
   - task: GitHubRelease@0
     inputs:
       gitHubConnection: 'github-release-connection'
       repositoryName: '$(Build.Repository.Name)' 
-      action: 'edit' # Options: create, edit, delete
+      action: 'create' # Options: create, edit, delete
       target: '$(Build.SourceVersion)' # Required when action == Create || Action == Edit
       tagSource: 'auto' # Required when action == Create# Options: auto, manual
       #tagPattern: # Optional
