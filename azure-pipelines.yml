@@ -34,7 +34,6 @@ jobs:
         $(Agent.OS)
       path: $(VCPKG_ROOT)
     displayName: Cache VCPKG_ROOT
-
   - script: |
       IF EXIST %VCPKG_ROOT% (cd %VCPKG_ROOT% && git pull && cd %cd%) ELSE git clone https://github.com/Microsoft/vcpkg.git %VCPKG_ROOT%
       %VCPKG_ROOT%\bootstrap-vcpkg.bat
@@ -75,9 +74,6 @@ jobs:
       xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libplist\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
       xcopy /F /Y %VCPKG_ROOT%\installed\%BUILD_ARCH%-windows\tools\libusbmuxd\*.exe %BUILD_ARTIFACTSTAGINGDIRECTORY%\libimobiledevice\%RID%\bin\
     displayName: 'Install'
-	
-  # Archive files
-  # Compress files into .7z, .tar.gz, or .zip
   - task: ArchiveFiles@2
     inputs:
       rootFolderOrFile: '$(Build.ArtifactStagingDirectory)\libimobiledevice' 
@@ -86,14 +82,12 @@ jobs:
       archiveFile: '$(Build.ArtifactStagingDirectory)\${Build.SourceBranch}.zip' 
       replaceExistingArchive: true 
       verbose: true
-
   - task: PublishBuildArtifacts@1
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)\libimobiledevice'
       artifactName: 'libimobiledevice' 
       publishLocation: 'Container'
     displayName: Publish
-
   # GitHub Release
   # Create, edit, or delete a GitHub release
   - task: GitHubRelease@0
