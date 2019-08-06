@@ -20,6 +20,14 @@ jobs:
   pool:
     vmImage: 'windows-latest'
   steps:
+  - task: CacheBeta@0
+    inputs:
+      key: |
+        vcpkg
+        $(Agent.OS)
+      path: $(VCPKG_ROOT)
+    displayName: Cache VCPKG_ROOT
+
   - script: |
       IF EXIST %VCPKG_ROOT% (cd %VCPKG_ROOT% && git pull && cd %cd%) ELSE git clone https://github.com/Microsoft/vcpkg.git %VCPKG_ROOT%
       %VCPKG_ROOT%\bootstrap-vcpkg.bat
