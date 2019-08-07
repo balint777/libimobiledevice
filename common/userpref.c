@@ -331,7 +331,7 @@ userpref_error_t userpref_read_pair_record(const char *udid, plist_t *pair_recor
 		plist_from_xml(record_data, record_size, pair_record);
 	}
 
-	free(record_data);
+	//free(record_data);
 
 	return res == 0 ? USERPREF_E_SUCCESS: USERPREF_E_UNKNOWN_ERROR;
 }
@@ -890,7 +890,7 @@ userpref_error_t pair_record_get_item_as_key_data(plist_t pair_record, const cha
 		value->data = (unsigned char*)malloc(length);
 		memcpy(value->data, buffer, length);
 		value->size = length;
-		free(buffer);
+		//free(buffer);
 		buffer = NULL;
 	} else {
 		ret = USERPREF_E_INVALID_CONF;

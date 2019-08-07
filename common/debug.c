@@ -74,7 +74,7 @@ static void debug_print_line(const char *func, const char *file, int line, const
 	if(0 > asprintf(&header, "%s %s:%d %s()", str_time, file, line, func)) {
 		return;
 	}
-	free (str_time);
+	free(str_time);
 
 	/* trim ending newlines */
 
@@ -210,7 +210,7 @@ void debug_plist_real(const char *func, const char *file, int line, plist_t plis
 	else
 		debug_info_real(func, file, line, "supress printing %i bytes plist...\n", length);
 
-	free(buffer);
+	//free(&buffer);
 #endif
 }
 

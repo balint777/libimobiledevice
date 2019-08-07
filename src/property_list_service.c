@@ -144,8 +144,6 @@ static property_list_service_error_t internal_plist_send(property_list_service_c
 		res = PROPERTY_LIST_SERVICE_E_MUX_ERROR;
 	}
 
-	free(content);
-
 	return res;
 }
 

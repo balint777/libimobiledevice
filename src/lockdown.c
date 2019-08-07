@@ -204,11 +204,8 @@ static lockdownd_error_t lockdown_check_result(plist_t dict, const char *query_m
 		}
 
 		if (query_match && (strcmp(query_value, query_match) != 0)) {
-			free(query_value);
 			return ret;
 		}
-
-		free(query_value);
 	}
 
 	plist_t result_node = plist_dict_get_item(dict, "Result");
@@ -224,7 +221,6 @@ static lockdownd_error_t lockdown_check_result(plist_t dict, const char *query_m
 				if (err_value) {
 					debug_info("ERROR: %s", err_value);
 					ret = lockdownd_strtoerr(err_value);
-					free(err_value);
 				} else {
 					debug_info("ERROR: unknown error occured");
 				}
@@ -251,9 +247,6 @@ static lockdownd_error_t lockdown_check_result(plist_t dict, const char *query_m
 				debug_info("ERROR: unknown result value '%s'", result_value);
 			}
 		}
-
-		if (result_value)
-			free(result_value);
 	}
 
 	return ret;
@@ -314,7 +307,7 @@ LIBIMOBILEDEVICE_API lockdownd_error_t lockdownd_stop_session(lockdownd_client_t
 	dict = NULL;
 
 	if (client->session_id) {
-		free(client->session_id);
+		//free(client->session_id);
 		client->session_id = NULL;
 	}
 
@@ -429,8 +422,6 @@ LIBIMOBILEDEVICE_API lockdownd_error_t lockdownd_query_type(lockdownd_client_t c
 		/* return the type if requested */
 		if (type != NULL) {
 			*type = typestr;
-		} else {
-			free(typestr);
 		}
 		ret = LOCKDOWN_E_SUCCESS;
 	} else {
@@ -713,7 +704,7 @@ LIBIMOBILEDEVICE_API lockdownd_error_t lockdownd_client_new_with_handshake(idevi
 	} else if (strcmp("com.apple.mobile.lockdown", type)) {
 		debug_info("Warning QueryType request returned \"%s\".", type);
 	}
-	free(type);
+	//free(type);
 
 	if (device->version == 0) {
 		plist_t p_version = NULL;
@@ -724,7 +715,6 @@ LIBIMOBILEDEVICE_API lockdownd_error_t lockdownd_client_new_with_handshake(idevi
 			if (s_version && sscanf(s_version, "%d.%d.%d", &vers[0], &vers[1], &vers[2]) >= 2) {
 				device->version = ((vers[0] & 0xFF) << 16) | ((vers[1] & 0xFF) << 8) | (vers[2] & 0xFF);
 			}
-			free(s_version);
 		}
 		plist_free(p_version);
 	}
@@ -781,7 +771,7 @@ LIBIMOBILEDEVICE_API lockdownd_error_t lockdownd_client_new_with_handshake(idevi
 	} else {
 		lockdownd_client_free(client_loc);
 	}
-	free(host_id);
+	//free(host_id);
 	return ret;
 }
 
@@ -1026,7 +1016,6 @@ static lockdownd_error_t lockdownd_do_pair(lockdownd_client_t client, lockdownd_
 			if (value) {
 				/* the first pairing fails if the device is password protected */
 				ret = lockdownd_strtoerr(value);
-				free(value);
 			}
 		}
 	}
@@ -1172,7 +1161,7 @@ LIBIMOBILEDEVICE_API lockdownd_error_t lockdownd_start_session(lockdownd_client_
 	if (system_buid) {
 		plist_dict_set_item(dict, "SystemBUID", plist_new_string(system_buid));
 		if (system_buid) {
-			free(system_buid);
+			//free(system_buid);
 			system_buid = NULL;
 		}
 	}
@@ -1309,7 +1298,7 @@ static lockdownd_error_t lockdownd_do_start_service(lockdownd_client_t client, c
 	}
 
 	plist_t dict = NULL;
-	uint16_t port_loc = 0;
+	uint64_t port_loc = 0;
 	lockdownd_error_t ret = LOCKDOWN_E_UNKNOWN_ERROR;
 
 	/* create StartService request */
@@ -1368,7 +1357,6 @@ static lockdownd_error_t lockdownd_do_start_service(lockdownd_client_t client, c
 			char *error = NULL;
 			plist_get_string_val(error_node, &error);
 			ret = lockdownd_strtoerr(error);
-			free(error);
 		}
 	}
 
@@ -1513,7 +1501,6 @@ LIBIMOBILEDEVICE_API lockdownd_error_t lockdownd_get_sync_data_classes(lockdownd
 		if (asprintf(&newlist[*count], "com.apple.%s", val) < 0) {
 			debug_info("ERROR: asprintf failed");
 		}
-		free(val);
 		val = NULL;
 		*classes = newlist;
 		*count = *count+1;

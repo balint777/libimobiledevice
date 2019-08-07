@@ -183,7 +183,7 @@ int socket_connect_unix(const char *filename)
 
 int socket_create(uint16_t port)
 {
-	int sfd = -1;
+	SOCKET sfd = -1;
 	int yes = 1;
 #ifdef WIN32
 	WSADATA wsa_data;
@@ -204,14 +204,14 @@ int socket_create(uint16_t port)
 
 	if (setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, (void*)&yes, sizeof(int)) == -1) {
 		perror("setsockopt()");
-		socket_close(sfd);
+		socket_close((int)sfd);
 		return -1;
 	}
 
 #ifdef SO_NOSIGPIPE
 	if (setsockopt(sfd, SOL_SOCKET, SO_NOSIGPIPE, (void*)&yes, sizeof(int)) == -1) {
 		perror("setsockopt()");
-		socket_close(sfd);
+		socket_close((int)sfd);
 		return -1;
 	}
 #endif
@@ -223,22 +223,22 @@ int socket_create(uint16_t port)
 
 	if (0 > bind(sfd, (struct sockaddr *) &saddr, sizeof(saddr))) {
 		perror("bind()");
-		socket_close(sfd);
+		socket_close((int)sfd);
 		return -1;
 	}
 
 	if (listen(sfd, 1) == -1) {
 		perror("listen()");
-		socket_close(sfd);
+		socket_close((int)sfd);
 		return -1;
 	}
 
-	return sfd;
+	return (int)sfd;
 }
 
 int socket_connect(const char *addr, uint16_t port)
 {
-	int sfd = -1;
+	SOCKET sfd = -1;
 	int yes = 1;
 	int bufsize = 0x20000;
 	struct addrinfo hints;
@@ -287,7 +287,7 @@ int socket_connect(const char *addr, uint16_t port)
 
 		if (setsockopt(sfd, SOL_SOCKET, SO_REUSEADDR, (void*)&yes, sizeof(int)) == -1) {
 			perror("setsockopt()");
-			socket_close(sfd);
+			socket_close((int)sfd);
 			continue;
 		}
 
@@ -313,7 +313,7 @@ int socket_connect(const char *addr, uint16_t port)
 			struct timeval timeout;
 			timeout.tv_sec = CONNECT_TIMEOUT / 1000;
 			timeout.tv_usec = (CONNECT_TIMEOUT - (timeout.tv_sec * 1000)) * 1000;
-			if (select(sfd + 1, NULL, &fds, NULL, &timeout) == 1) {
+			if (select((int)sfd + 1, NULL, &fds, NULL, &timeout) == 1) {
 				int so_error;
 				socklen_t len = sizeof(so_error);
 				getsockopt(sfd, SOL_SOCKET, SO_ERROR, (void*)&so_error, &len);
@@ -322,7 +322,7 @@ int socket_connect(const char *addr, uint16_t port)
 				}
 			}
 		}
-		socket_close(sfd);
+		socket_close((int)sfd);
 	}
 
 	freeaddrinfo(result);
@@ -360,7 +360,7 @@ int socket_connect(const char *addr, uint16_t port)
 		perror("Could not set receive buffer for socket");
 	}
 
-	return sfd;
+	return (int)sfd;
 }
 
 int socket_check_fd(int fd, fd_mode fdm, unsigned int timeout)
@@ -436,7 +436,7 @@ int socket_accept(int fd, uint16_t port)
 #else
 	socklen_t addr_len;
 #endif
-	int result;
+	SOCKET result;
 	struct sockaddr_in addr;
 
 	memset(&addr, 0, sizeof(addr));
@@ -447,7 +447,7 @@ int socket_accept(int fd, uint16_t port)
 	addr_len = sizeof(addr);
 	result = accept(fd, (struct sockaddr*)&addr, &addr_len);
 
-	return result;
+	return (int)result;
 }
 
 int socket_shutdown(int fd, int how)

@@ -390,12 +390,10 @@ static void plist_dict_print_to_stream(plist_t node, int* indent_level, FILE* st
 			fprintf(stream, "[%d]: ", plist_array_get_size(subnode));
 		else
 			fprintf(stream, ": ");
-		free(key);
 		key = NULL;
 		plist_node_print_to_stream(subnode, indent_level, stream);
 		plist_dict_next_item(node, it, &key, &subnode);
 	}
-	free(it);
 }
 
 static void plist_node_print_to_stream(plist_t node, int* indent_level, FILE* stream)
@@ -433,7 +431,6 @@ static void plist_node_print_to_stream(plist_t node, int* indent_level, FILE* st
 	case PLIST_STRING:
 		plist_get_string_val(node, &s);
 		fprintf(stream, "%s\n", s);
-		free(s);
 		break;
 
 	case PLIST_KEY:
@@ -446,7 +443,6 @@ static void plist_node_print_to_stream(plist_t node, int* indent_level, FILE* st
 		plist_get_data_val(node, &data, &u);
 		if (u > 0) {
 			s = base64encode((unsigned char*)data, u);
-			free(data);
 			if (s) {
 				fprintf(stream, "%s\n", s);
 				free(s);
